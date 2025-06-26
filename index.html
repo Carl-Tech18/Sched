@@ -135,7 +135,7 @@
         background: #fff;
         padding: 0;
       }
-      .btn-group, .header input, .theme-selector, .subject-panel {
+      .btn-group, .header input, .theme-selector, .subject-panel, #majorSelect {
         display: none !important;
       }
       table {
@@ -204,7 +204,13 @@
 </head>
 <body class="default">
 
-  <h2>BACHELOR OF SECONDARY EDUCATION – FILIPINO</h2>
+  <div style="text-align:center; margin-bottom: 8px;">
+    <h2 id="majorTitle" style="display:inline;">BACHELOR OF SECONDARY EDUCATION – FILIPINO</h2>
+    <select id="majorSelect" onchange="changeMajor()" style="margin-left:15px; font-size:1em;">
+      <option value="FILIPINO">Filipino</option>
+      <option value="ENGLISH">English</option>
+    </select>
+  </div>
   <div class="header">
     <strong>1st Semester, Academic Year 2025–2026</strong><br>
     Section: <input type="text" id="sectionName" placeholder="Enter Section" style="width: 200px;">
@@ -384,87 +390,67 @@
   </table>
 
   <script>
-  function changeTheme() {
-    const theme = document.getElementById('theme').value;
-    document.body.classList.remove('default', 'matcha', 'pink', 'blue');
-    document.body.classList.add(theme);
-  }
-
-  function saveSchedule() {
-    let table = document.getElementById('scheduleTable');
-    let section = document.getElementById('sectionName').value;
-    let csv = 'Section:,' + section + '\n';
-    for (let row of table.rows) {
-      let rowData = [];
-      for (let i = 0; i < row.cells.length; i++) {
-        if (i === 0) { // TIME column
-          rowData.push(row.cells[i].textContent);
-        } else {
-          let input = row.cells[i].querySelector('input[type="text"]');
-          rowData.push(input ? input.value.replace(/,/g, ' ') : '');
-        }
-      }
-      csv += rowData.join(',') + '\n';
+    function changeMajor() {
+      const major = document.getElementById('majorSelect').value;
+      const title = document.getElementById('majorTitle');
+      title.textContent = "BACHELOR OF SECONDARY EDUCATION – " + major;
     }
-    let blob = new Blob([csv], {type: 'text/csv'});
-    let link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'schedule.csv';
-    link.click();
+
+    function changeTheme() {
+      const theme = document.getElementById('theme').value;
+      document.body.classList.remove('default', 'matcha', 'pink', 'blue');
+      document.body.classList.add(theme);
+    }
+
+    function saveSchedule() {
+  let table = document.getElementById('scheduleTable');
+  let section = document.getElementById('sectionName').value;
+  // Get heading and subheading
+  let heading = document.getElementById('majorTitle').textContent;
+  let subheading = document.querySelector('.header strong').textContent;
+
+  // Build CSV
+  let csv = heading + '\n' + subheading + '\n' + 'Section:,' + section + '\n';
+
+  for (let row of table.rows) {
+    let rowData = [];
+    for (let i = 0; i < row.cells.length; i++) {
+      let input = row.cells[i].querySelector('input[type="text"]');
+      rowData.push(input ? input.value.replace(/,/g, ' ') : '');
+    }
+    csv += rowData.join(',') + '\n';
   }
-
-  function saveAsImage() {
-    // Clone the table and replace all inputs with their text values for the image
-    const originalTable = document.getElementById('scheduleTable');
-    const cloneTable = originalTable.cloneNode(true);
-    cloneTable.id = '';
-    // Replace all inputs
-    const inputs = cloneTable.querySelectorAll('input[type="text"]');
-    inputs.forEach(input => {
-      const value = input.value.replace(/\n/g, '<br>');
-      const span = document.createElement('span');
-      span.innerHTML = value;
-      input.parentNode.replaceChild(span, input);
-    });
-
-    // Apply the current theme to the clone
-    const theme = document.body.className;
-    cloneTable.className = originalTable.className;
-    document.body.appendChild(cloneTable);
-    cloneTable.style.position = 'fixed';
-    cloneTable.style.top = '-9999px';
-
-    html2canvas(cloneTable).then(function(canvas) {
-      const link = document.createElement('a');
-      link.download = 'schedule.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      document.body.removeChild(cloneTable);
-    });
-  }
-
-  // Subject quick fill: Copy to clipboard on click
-  document.addEventListener('DOMContentLoaded', function() {
-    var subjectBtns = document.querySelectorAll('.subject-btn');
-    subjectBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        const value = btn.getAttribute('data-value').replace(/<br\s*\/?>/gi, "\n");
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(value);
-          btn.textContent = "Copied! (Paste in table cell)";
-          setTimeout(() => {
-            btn.textContent = btn.getAttribute('data-value').replace(/\n/g, ' ').replace(/<br\s*\/?>/gi, ' ');
-          }, 900);
-        } else {
-          // fallback
-          const textarea = document.createElement('textarea');
-          textarea.value = value;
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textarea);
-        }
+  let blob = new Blob([csv], {type: 'text/csv'});
+  let link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'schedule.csv';
+  link.click();
+    }
+    
+    function saveAsImage() {
+      // Clone table and replace all inputs with their text values for the image
+      const originalTable = document.getElementById('scheduleTable');
+      const cloneTable = originalTable.cloneNode(true);
+      cloneTable.id = '';
+      // Replace all inputs
+      const inputs = cloneTable.querySelectorAll('input[type="text"]');
+      inputs.forEach(input => {
+        const value = input.value.replace(/\n/g, '<br>');
+        const span = document.createElement('span');
+        span.innerHTML = value;
+        input.parentNode.replaceChild(span, input);
       });
-    });
-  });
-  </script>
+
+      // Apply the current theme to the clone
+      const theme = document.body.className;
+      cloneTable.className = originalTable.className;
+      document.body.appendChild(cloneTable);
+      cloneTable.style.position = 'fixed';
+      cloneTable.style.top = '-9999px';
+
+      html2canvas(cloneTable).then(function(canvas) {
+        const link = document.createElement('a');
+        link.download = 'schedule.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        document.
