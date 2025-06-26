@@ -18,18 +18,24 @@
       margin-bottom: 10px;
       text-align: center;
     }
+    .theme-selector {
+      text-align: center;
+      margin-bottom: 15px;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 15px;
       background: #fff;
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: background 0.3s, box-shadow 0.3s;
     }
     th, td {
       border: 1px solid #444;
       padding: 8px;
       text-align: center;
       vertical-align: top;
+      transition: background 0.3s, color 0.3s;
     }
     th {
       background: #1976d2;
@@ -46,6 +52,7 @@
       border-radius: 5px;
       background: transparent;
       transition: background 0.2s;
+      font-size: 1em;
     }
     input[type="text"]:focus {
       outline: none;
@@ -73,7 +80,7 @@
         background: #fff;
         padding: 0;
       }
-      .btn-group, .header input {
+      .btn-group, .header input, .theme-selector {
         display: none !important;
       }
       table {
@@ -83,16 +90,79 @@
       th, td {
         border-color: #000;
       }
+      input[type="text"] {
+        border: none !important;
+        background: transparent !important;
+        color: #000 !important;
+      }
+    }
+
+    /* THEME: Matcha Green */
+    .matcha th {
+      background: #6CB288 !important;
+      color: #fff !important;
+    }
+    .matcha tbody tr:nth-child(even) {
+      background: #eafaf1 !important;
+    }
+    .matcha table, .matcha td, .matcha th {
+      border-color: #6CB288 !important;
+    }
+
+    /* THEME: Pink */
+    .pink th {
+      background: #E75480 !important;
+      color: #fff !important;
+    }
+    .pink tbody tr:nth-child(even) {
+      background: #ffe2ed !important;
+    }
+    .pink table, .pink td, .pink th {
+      border-color: #E75480 !important;
+    }
+
+    /* THEME: Blue */
+    .blue th {
+      background: #1976d2 !important;
+      color: #fff !important;
+    }
+    .blue tbody tr:nth-child(even) {
+      background: #e3f0fa !important;
+    }
+    .blue table, .blue td, .blue th {
+      border-color: #1976d2 !important;
+    }
+
+    /* THEME: Default */
+    .default th {
+      background: #1976d2 !important;
+      color: #fff !important;
+    }
+    .default tbody tr:nth-child(even) {
+      background: #f1f8ff !important;
+    }
+    .default table, .default td, .default th {
+      border-color: #444 !important;
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
-<body>
+<body class="default">
 
   <h2>BACHELOR OF SECONDARY EDUCATION – FILIPINO</h2>
   <div class="header">
     <strong>1st Semester, Academic Year 2025–2026</strong><br>
     Section: <input type="text" id="sectionName" placeholder="Enter Section" style="width: 200px;">
+  </div>
+
+  <div class="theme-selector">
+    <label for="theme">Table Color: </label>
+    <select id="theme" onchange="changeTheme()">
+      <option value="default">Default</option>
+      <option value="matcha">Matcha Green</option>
+      <option value="pink">Pink</option>
+      <option value="blue">Blue</option>
+    </select>
   </div>
 
   <div class="btn-group">
@@ -116,107 +186,116 @@
     <tbody>
       <tr>
         <td>7:30–8:00</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
       </tr>
       <tr>
         <td>8:00–9:00</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
       </tr>
       <tr>
         <td>9:00–10:00</td>
-        <td><strong>GECC 101a – Art Appreciation</strong><br>Rm. 200 (CE)</td>
-        <td></td>
-        <td><strong>GECC 101a – Art Appreciation</strong><br>Rm. 200 (CE)</td>
-        <td></td>
-        <td><strong>GECC 101a – Art Appreciation</strong><br>Rm. 200 (CE)</td>
-        <td></td>
+        <td><input type="text" value="GECC 101a – Art Appreciation&#10;Rm. 200 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 101a – Art Appreciation&#10;Rm. 200 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 101a – Art Appreciation&#10;Rm. 200 (CE)"></td>
+        <td><input type="text"></td>
       </tr>
       <tr>
         <td>10:00–11:00</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
       </tr>
       <tr>
         <td>11:00–12:00</td>
-        <td><strong>EDUC 101 – Child & Adolescent Learner</strong><br>Rm. 202 (CE)</td>
-        <td><strong>GEEC 111 – Gender & Society</strong><br>LHS 210 (CE)</td>
-        <td><strong>EDUC 101 – Child & Adolescent Learner</strong><br>Rm. 202 (CE)</td>
-        <td><strong>GEEC 111 – Gender & Society</strong><br>LHS 210 (CE)</td>
-        <td><strong>EDUC 101 – Child & Adolescent Learner</strong><br>Rm. 202 (CE)</td>
-        <td><strong>NSTP 101C – LTS</strong><br>8:00–11:00AM<br>Grnd-13 (CE)</td>
+        <td><input type="text" value="EDUC 101 – Child & Adolescent Learner&#10;Rm. 202 (CE)"></td>
+        <td><input type="text" value="GEEC 111 – Gender & Society&#10;LHS 210 (CE)"></td>
+        <td><input type="text" value="EDUC 101 – Child & Adolescent Learner&#10;Rm. 202 (CE)"></td>
+        <td><input type="text" value="GEEC 111 – Gender & Society&#10;LHS 210 (CE)"></td>
+        <td><input type="text" value="EDUC 101 – Child & Adolescent Learner&#10;Rm. 202 (CE)"></td>
+        <td><input type="text" value="NSTP 101C – LTS&#10;8:00–11:00AM&#10;Grnd-13 (CE)"></td>
       </tr>
       <tr>
         <td>12:00–1:00</td>
-        <td><strong>GECC 105a – Science, Tech & Society</strong><br>Rm. 200 (CE)</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td><strong>GECC 105a – Science, Tech & Society</strong><br>Rm. 200 (CE)</td>
-        <td></td>
+        <td><input type="text" value="GECC 105a – Science, Tech & Society&#10;Rm. 200 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 105a – Science, Tech & Society&#10;Rm. 200 (CE)"></td>
+        <td><input type="text"></td>
       </tr>
       <tr>
         <td>1:00–2:00</td>
-        <td></td>
-        <td><strong>GECC 104a – Ethics</strong><br>Rm. 202 (CE)</td>
-        <td></td>
-        <td><strong>GECC 104a – Ethics</strong><br>Rm. 202 (CE)</td>
-        <td></td>
-        <td></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 104a – Ethics&#10;Rm. 202 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 104a – Ethics&#10;Rm. 202 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
       </tr>
       <tr>
         <td>2:00–3:00</td>
-        <td></td>
-        <td></td>
-        <td><strong>GECC 105a – Science, Tech & Society</strong><br>Rm. 207 (CE)</td>
-        <td></td>
-        <td><strong>GECC 103a – Math in the Modern World</strong><br>LHS 210 (CE)</td>
-        <td></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 105a – Science, Tech & Society&#10;Rm. 207 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 103a – Math in the Modern World&#10;LHS 210 (CE)"></td>
+        <td><input type="text"></td>
       </tr>
       <tr>
         <td>3:00–4:00</td>
-        <td><strong>PATHFIT 101 – Mvmt. Competency Trng</strong><br>2:30–4:30PM<br>Grnd-13 (CE)</td>
-        <td><strong>GECC 102a – Purposive Comm</strong><br>LHS 210 (CE)</td>
-        <td><strong>GECC 103a – Math in the Modern World</strong><br>LHS 210 (CE)</td>
-        <td><strong>GECC 102a – Purposive Comm</strong><br>LHS 210 (CE)</td>
-        <td></td>
-        <td></td>
+        <td><input type="text" value="PATHFIT 101 – Mvmt. Competency Trng&#10;2:30–4:30PM&#10;Grnd-13 (CE)"></td>
+        <td><input type="text" value="GECC 102a – Purposive Comm&#10;LHS 210 (CE)"></td>
+        <td><input type="text" value="GECC 103a – Math in the Modern World&#10;LHS 210 (CE)"></td>
+        <td><input type="text" value="GECC 102a – Purposive Comm&#10;LHS 210 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
       </tr>
       <tr>
         <td>4:00–5:00</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
       </tr>
     </tbody>
   </table>
 
   <script>
+    function changeTheme() {
+      const theme = document.getElementById('theme').value;
+      document.body.className = theme;
+    }
+
     function saveSchedule() {
       let table = document.getElementById('scheduleTable');
       let section = document.getElementById('sectionName').value;
       let csv = 'Section:,' + section + '\n';
       for (let row of table.rows) {
         let rowData = [];
-        for (let cell of row.cells) {
-          let input = cell.querySelector('input[type="text"]');
-          rowData.push(input ? input.value.replace(/,/g, ' ') : cell.textContent);
+        for (let i = 0; i < row.cells.length; i++) {
+          if (i === 0) { // TIME column
+            rowData.push(row.cells[i].textContent);
+          } else {
+            let input = row.cells[i].querySelector('input[type="text"]');
+            rowData.push(input ? input.value.replace(/,/g, ' ') : '');
+          }
         }
         csv += rowData.join(',') + '\n';
       }
@@ -228,14 +307,34 @@
     }
 
     function saveAsImage() {
-      const table = document.getElementById('scheduleTable');
-      html2canvas(table).then(function(canvas) {
+      // Clone the table and replace all inputs with their text values for the image
+      const originalTable = document.getElementById('scheduleTable');
+      const cloneTable = originalTable.cloneNode(true);
+      cloneTable.id = '';
+      // Replace all inputs
+      const inputs = cloneTable.querySelectorAll('input[type="text"]');
+      inputs.forEach(input => {
+        const value = input.value.replace(/\n/g, '<br>');
+        const span = document.createElement('span');
+        span.innerHTML = value;
+        input.parentNode.replaceChild(span, input);
+      });
+
+      // Apply the current theme to the clone
+      const theme = document.body.className;
+      cloneTable.className = originalTable.className;
+      document.body.appendChild(cloneTable);
+      cloneTable.style.position = 'fixed';
+      cloneTable.style.top = '-9999px';
+
+      html2canvas(cloneTable).then(function(canvas) {
         const link = document.createElement('a');
         link.download = 'schedule.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
+        document.body.removeChild(cloneTable);
       });
     }
   </script>
 </body>
-</html>
+          </html>
