@@ -44,23 +44,24 @@
       th, td { border-color: #000; }
       .schedule-input { border: none !important; background: transparent !important; color: #000 !important; }
     }
-    .matcha th { background: #6CB288 !important; color: #fff !important; }
-    .matcha tbody tr:nth-child(even) { background: #eafaf1 !important; }
-    .matcha table, .matcha td, .matcha th { border-color: #6CB288 !important; }
-    .pink th { background: #E75480 !important; color: #fff !important; }
-    .pink tbody tr:nth-child(even) { background: #ffe2ed !important; }
-    .pink table, .pink td, .pink th { border-color: #E75480 !important; }
-    .blue th { background: #1976d2 !important; color: #fff !important; }
-    .blue tbody tr:nth-child(even) { background: #e3f0fa !important; }
-    .blue table, .blue td, .blue th { border-color: #1976d2 !important; }
-    .default th { background: #1976d2 !important; color: #fff !important; }
-    .default tbody tr:nth-child(even) { background: #f1f8ff !important; }
-    .default table, .default td, .default th { border-color: #444 !important; }
+    /* THEME: apply to #scheduleTable for all color themes */
+    #scheduleTable.matcha th { background: #6CB288 !important; color: #fff !important; }
+    #scheduleTable.matcha tbody tr:nth-child(even) { background: #eafaf1 !important; }
+    #scheduleTable.matcha, #scheduleTable.matcha td, #scheduleTable.matcha th { border-color: #6CB288 !important; }
+    #scheduleTable.pink th { background: #E75480 !important; color: #fff !important; }
+    #scheduleTable.pink tbody tr:nth-child(even) { background: #ffe2ed !important; }
+    #scheduleTable.pink, #scheduleTable.pink td, #scheduleTable.pink th { border-color: #E75480 !important; }
+    #scheduleTable.blue th { background: #1976d2 !important; color: #fff !important; }
+    #scheduleTable.blue tbody tr:nth-child(even) { background: #e3f0fa !important; }
+    #scheduleTable.blue, #scheduleTable.blue td, #scheduleTable.blue th { border-color: #1976d2 !important; }
+    #scheduleTable.default th { background: #1976d2 !important; color: #fff !important; }
+    #scheduleTable.default tbody tr:nth-child(even) { background: #f1f8ff !important; }
+    #scheduleTable.default, #scheduleTable.default td, #scheduleTable.default th { border-color: #444 !important; }
     .droppable { outline: 2px dashed #6CB288 !important; background: #f7fff9 !important; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
-<body class="default">
+<body>
 
   <div class="major-selector">
     <label for="major">Major: </label>
@@ -126,7 +127,7 @@
         <button onclick="saveAsImage()">Save as Image</button>
         <button onclick="resetSchedule()" style="background:#E75480;">Reset</button>
       </div>
-      <table id="scheduleTable">
+      <table id="scheduleTable" class="default">
         <thead>
           <tr>
             <th>TIME</th>
@@ -234,36 +235,38 @@
     </div>
   </div>
   <script>
-    // Drag-and-drop logic for subject list to schedule cells
     let draggedValue = null;
     function updateDraggables() {
       document.querySelectorAll('.subject-item').forEach(item => {
-        item.addEventListener('dragstart', function(e) {
+        item.ondragstart = function() {
           draggedValue = this.getAttribute('data-value');
-        });
+        };
       });
     }
     function enableDroppable() {
       document.querySelectorAll('.schedule-input').forEach(cell => {
-        cell.addEventListener('dragover', function(e) {
+        cell.ondragover = function(e) {
           e.preventDefault();
           this.parentElement.classList.add('droppable');
-        });
-        cell.addEventListener('dragleave', function(e) {
+        };
+        cell.ondragleave = function() {
           this.parentElement.classList.remove('droppable');
-        });
-        cell.addEventListener('drop', function(e) {
+        };
+        cell.ondrop = function(e) {
           e.preventDefault();
           if (draggedValue) {
             this.value = draggedValue.replace(/&#10;/g, '\n');
           }
           this.parentElement.classList.remove('droppable');
-        });
+        };
       });
     }
     // Initial enable
-    updateDraggables();
-    enableDroppable();
+    window.onload = function() {
+      enableDroppable();
+      updateDraggables();
+      changeMajor();
+    };
     // Add Custom Subject
     function addCustomSubject() {
       const name = document.getElementById('customSubject').value.trim();
@@ -275,34 +278,27 @@
         display += "<br><small>" + room + "</small>";
         value += "&#10;" + room;
       }
-      // Make div
       const div = document.createElement('div');
       div.className = 'subject-item custom';
       div.setAttribute('draggable', 'true');
       div.setAttribute('data-value', value);
       div.innerHTML = display;
-      // Drag event
-      div.addEventListener('dragstart', function(e) {
+      div.ondragstart = function() {
         draggedValue = this.getAttribute('data-value');
-      });
-      // Add to subject list
+      };
       document.getElementById('subjectsList').appendChild(div);
-      // Reset form
       document.getElementById('customSubject').value = "";
       document.getElementById('customRoom').value = "";
       return false;
     }
-    // Theme logic
     function changeTheme() {
       const theme = document.getElementById('theme').value;
-      document.body.className = theme;
+      const table = document.getElementById('scheduleTable');
+      table.className = theme;
     }
-    // Major logic
     function changeMajor() {
       const major = document.getElementById('major').value;
-      const majorTitle = document.getElementById('majorTitle');
-      majorTitle.textContent = "BACHELOR OF SECONDARY EDUCATION – " + major.toUpperCase();
-      // Show/hide subject items based on major
+      document.getElementById('majorTitle').textContent = "BACHELOR OF SECONDARY EDUCATION – " + major.toUpperCase();
       document.querySelectorAll('.subject-item.filipino').forEach(item => {
         item.style.display = (major === "Filipino") ? "" : "none";
       });
@@ -322,7 +318,4 @@
             let input = row.cells[i].querySelector('.schedule-input');
             rowData.push(input ? input.value.replace(/,/g, ' ') : '');
           }
-        }
-        csv += rowData.join(',') + '\n';
-      }
-      let blob = new 
+   
