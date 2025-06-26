@@ -291,7 +291,7 @@
     </thead>
     <tbody>
       <tr>
-        <td>7:30–8:00</td>
+        <td><input type="text" value="7:30–8:00"></td>
         <td><input type="text"></td>
         <td><input type="text"></td>
         <td><input type="text"></td>
@@ -300,7 +300,7 @@
         <td><input type="text"></td>
       </tr>
       <tr>
-        <td>8:00–9:00</td>
+        <td><input type="text" value="8:00–9:00"></td>
         <td><input type="text"></td>
         <td><input type="text"></td>
         <td><input type="text"></td>
@@ -309,7 +309,7 @@
         <td><input type="text"></td>
       </tr>
       <tr>
-        <td>9:00–10:00</td>
+        <td><input type="text" value="9:00–10:00"></td>
         <td><input type="text" value="GECC 101a – Art Appreciation&#10;Rm. 200 (CE)"></td>
         <td><input type="text"></td>
         <td><input type="text" value="GECC 101a – Art Appreciation&#10;Rm. 200 (CE)"></td>
@@ -318,7 +318,7 @@
         <td><input type="text"></td>
       </tr>
       <tr>
-        <td>10:00–11:00</td>
+        <td><input type="text" value="10:00–11:00"></td>
         <td><input type="text"></td>
         <td><input type="text"></td>
         <td><input type="text"></td>
@@ -327,7 +327,7 @@
         <td><input type="text"></td>
       </tr>
       <tr>
-        <td>11:00–12:00</td>
+        <td><input type="text" value="11:00–12:00"></td>
         <td><input type="text" value="EDUC 101 – Child & Adolescent Learner&#10;Rm. 202 (CE)"></td>
         <td><input type="text" value="GEEC 111 – Gender & Society&#10;LHS 210 (CE)"></td>
         <td><input type="text" value="EDUC 101 – Child & Adolescent Learner&#10;Rm. 202 (CE)"></td>
@@ -336,7 +336,7 @@
         <td><input type="text" value="NSTP 101C – LTS&#10;8:00–11:00AM&#10;Grnd-13 (CE)"></td>
       </tr>
       <tr>
-        <td>12:00–1:00</td>
+        <td><input type="text" value="12:00–1:00"></td>
         <td><input type="text" value="GECC 105a – Science, Tech & Society&#10;Rm. 200 (CE)"></td>
         <td><input type="text"></td>
         <td><input type="text"></td>
@@ -345,7 +345,7 @@
         <td><input type="text"></td>
       </tr>
       <tr>
-        <td>1:00–2:00</td>
+        <td><input type="text" value="1:00–2:00"></td>
         <td><input type="text"></td>
         <td><input type="text" value="GECC 104a – Ethics&#10;Rm. 202 (CE)"></td>
         <td><input type="text"></td>
@@ -354,7 +354,7 @@
         <td><input type="text"></td>
       </tr>
       <tr>
-        <td>2:00–3:00</td>
+        <td><input type="text" value="2:00–3:00"></td>
         <td><input type="text"></td>
         <td><input type="text"></td>
         <td><input type="text" value="GECC 105a – Science, Tech & Society&#10;Rm. 207 (CE)"></td>
@@ -363,7 +363,7 @@
         <td><input type="text"></td>
       </tr>
       <tr>
-        <td>3:00–4:00</td>
+        <td><input type="text" value="3:00–4:00"></td>
         <td><input type="text" value="PATHFIT 101 – Movement Competency Trng&#10;2:30–4:30PM&#10;Grnd-13 (CE)"></td>
         <td><input type="text" value="GECC 102a – Purposive Comm&#10;LHS 210 (CE)"></td>
         <td><input type="text" value="GECC 103a – Math in the Modern World&#10;LHS 210 (CE)"></td>
@@ -372,7 +372,7 @@
         <td><input type="text"></td>
       </tr>
       <tr>
-        <td>4:00–5:00</td>
+        <td><input type="text" value="4:00–5:00"></td>
         <td><input type="text"></td>
         <td><input type="text"></td>
         <td><input type="text"></td>
@@ -384,87 +384,71 @@
   </table>
 
   <script>
-  function changeTheme() {
-    const theme = document.getElementById('theme').value;
-    document.body.classList.remove('default', 'matcha', 'pink', 'blue');
-    document.body.classList.add(theme);
-  }
+    function changeTheme() {
+      const theme = document.getElementById('theme').value;
+      document.body.classList.remove('default', 'matcha', 'pink', 'blue');
+      document.body.classList.add(theme);
+    }
 
-  function saveSchedule() {
-    let table = document.getElementById('scheduleTable');
-    let section = document.getElementById('sectionName').value;
-    let csv = 'Section:,' + section + '\n';
-    for (let row of table.rows) {
-      let rowData = [];
-      for (let i = 0; i < row.cells.length; i++) {
-        if (i === 0) { // TIME column
-          rowData.push(row.cells[i].textContent);
-        } else {
+    function saveSchedule() {
+      let table = document.getElementById('scheduleTable');
+      let section = document.getElementById('sectionName').value;
+      let csv = 'Section:,' + section + '\n';
+      for (let row of table.rows) {
+        let rowData = [];
+        for (let i = 0; i < row.cells.length; i++) {
           let input = row.cells[i].querySelector('input[type="text"]');
           rowData.push(input ? input.value.replace(/,/g, ' ') : '');
         }
+        csv += rowData.join(',') + '\n';
       }
-      csv += rowData.join(',') + '\n';
-    }
-    let blob = new Blob([csv], {type: 'text/csv'});
-    let link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'schedule.csv';
-    link.click();
-  }
-
-  function saveAsImage() {
-    // Clone the table and replace all inputs with their text values for the image
-    const originalTable = document.getElementById('scheduleTable');
-    const cloneTable = originalTable.cloneNode(true);
-    cloneTable.id = '';
-    // Replace all inputs
-    const inputs = cloneTable.querySelectorAll('input[type="text"]');
-    inputs.forEach(input => {
-      const value = input.value.replace(/\n/g, '<br>');
-      const span = document.createElement('span');
-      span.innerHTML = value;
-      input.parentNode.replaceChild(span, input);
-    });
-
-    // Apply the current theme to the clone
-    const theme = document.body.className;
-    cloneTable.className = originalTable.className;
-    document.body.appendChild(cloneTable);
-    cloneTable.style.position = 'fixed';
-    cloneTable.style.top = '-9999px';
-
-    html2canvas(cloneTable).then(function(canvas) {
-      const link = document.createElement('a');
-      link.download = 'schedule.png';
-      link.href = canvas.toDataURL('image/png');
+      let blob = new Blob([csv], {type: 'text/csv'});
+      let link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'schedule.csv';
       link.click();
-      document.body.removeChild(cloneTable);
-    });
-  }
+    }
 
-  // Subject quick fill: Copy to clipboard on click
-  document.addEventListener('DOMContentLoaded', function() {
-    var subjectBtns = document.querySelectorAll('.subject-btn');
-    subjectBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        const value = btn.getAttribute('data-value').replace(/<br\s*\/?>/gi, "\n");
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(value);
-          btn.textContent = "Copied! (Paste in table cell)";
-          setTimeout(() => {
-            btn.textContent = btn.getAttribute('data-value').replace(/\n/g, ' ').replace(/<br\s*\/?>/gi, ' ');
-          }, 900);
-        } else {
-          // fallback
-          const textarea = document.createElement('textarea');
-          textarea.value = value;
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textarea);
-        }
+    function saveAsImage() {
+      // Clone the table and replace all inputs with their text values for the image
+      const originalTable = document.getElementById('scheduleTable');
+      const cloneTable = originalTable.cloneNode(true);
+      cloneTable.id = '';
+      // Replace all inputs
+      const inputs = cloneTable.querySelectorAll('input[type="text"]');
+      inputs.forEach(input => {
+        const value = input.value.replace(/\n/g, '<br>');
+        const span = document.createElement('span');
+        span.innerHTML = value;
+        input.parentNode.replaceChild(span, input);
       });
-    });
-  });
-  </script>
+
+      // Apply the current theme to the clone
+      const theme = document.body.className;
+      cloneTable.className = originalTable.className;
+      document.body.appendChild(cloneTable);
+      cloneTable.style.position = 'fixed';
+      cloneTable.style.top = '-9999px';
+
+      html2canvas(cloneTable).then(function(canvas) {
+        const link = document.createElement('a');
+        link.download = 'schedule.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        document.body.removeChild(cloneTable);
+      });
+    }
+
+    // Subject quick fill: Copy to clipboard on click
+    document.addEventListener('DOMContentLoaded', function() {
+      var subjectBtns = document.querySelectorAll('.subject-btn');
+      subjectBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const value = btn.getAttribute('data-value').replace(/<br\s*\/?>/gi, "\n");
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(value);
+            btn.textContent = "Copied! (Paste in table cell)";
+            setTimeout(() => {
+              btn.textContent = btn.getAttribute('data-value').replace(/\n/g, ' ').replace(/<br\s*\/?>/gi, ' ');
+            }, 900);
+          } els
