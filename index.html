@@ -111,7 +111,19 @@
         <th>SATURDAY</th>
       </tr>
     </thead>
-    <tbody>
+    
+  </table>
+
+  <script>
+    function saveSchedule() {
+      let table = document.getElementById('scheduleTable');
+      let section = document.getElementById('sectionName').value;
+      let csv = 'Section:,' + section + '\\n';
+      for (let row of table.rows) {
+        let rowData = [];
+        for (let cell of row.cells) {
+          let input = cell.querySelector('input[type="text"]');
+          rowD<tbody>
   <tr>
     <td>7:30–8:00</td>
     <td></td>
@@ -155,7 +167,7 @@
     <td><strong>EDUC 101 – Child & Adolescent Learner</strong><br>Rm. 202 (CE)</td>
     <td><strong>GEEC 111 – Gender & Society</strong><br>LHS 210 (CE)</td>
     <td><strong>EDUC 101 – Child & Adolescent Learner</strong><br>Rm. 202 (CE)</td>
-    <td></td>
+    <td><strong>NSTP 101C – LTS</strong><br>8:00–11:00AM<br>Grnd-13 (CE)</td>
   </tr>
   <tr>
     <td>12:00–1:00</td>
@@ -186,7 +198,7 @@
   </tr>
   <tr>
     <td>3:00–4:00</td>
-    <td></td>
+    <td><strong>PATHFIT 101 – Mvmt. Competency Trng</strong><br>2:30–4:30PM<br>Grnd-13 (CE)</td>
     <td><strong>GECC 102a – Purposive Comm</strong><br>LHS 210 (CE)</td>
     <td><strong>GECC 103a – Math in the Modern World</strong><br>LHS 210 (CE)</td>
     <td><strong>GECC 102a – Purposive Comm</strong><br>LHS 210 (CE)</td>
@@ -202,19 +214,7 @@
     <td></td>
     <td></td>
   </tr>
-    </tbody>
-  </table>
-
-  <script>
-    function saveSchedule() {
-      let table = document.getElementById('scheduleTable');
-      let section = document.getElementById('sectionName').value;
-      let csv = 'Section:,' + section + '\\n';
-      for (let row of table.rows) {
-        let rowData = [];
-        for (let cell of row.cells) {
-          let input = cell.querySelector('input[type="text"]');
-          rowData.push(input ? input.value.replace(/,/g, ' ') : cell.textContent);
+            </tbody>ata.push(input ? input.value.replace(/,/g, ' ') : cell.textContent);
         }
         csv += rowData.join(',') + '\\n';
       }
