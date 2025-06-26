@@ -450,6 +450,10 @@ table#scheduleTable {
     <button onclick="saveAsImage()">Save as Image</button>
   </div>
 
+<select id="majorSelect" onchange="changeMajor()" style="margin-left:15px; font-size:1em;">
+    <option value="FILIPINO">Filipino</option>
+    <option value="ENGLISH">English</option>
+  
   <script>
   function changeMajor() {
   const major = document.getElementById('majorSelect').value;
