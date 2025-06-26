@@ -4,78 +4,212 @@
   <meta charset="UTF-8">
   <title>Class Schedule Template</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
-    h2 { text-align: center; margin-bottom: 5px; color: #1565c0; }
-    .header, .major-selector, .theme-selector { text-align: center; margin-bottom: 10px; }
-    .layout { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; justify-content: center; }
-    .subjects-list {
-      background: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 10px; min-width: 240px; margin-bottom: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06); height: 500px; overflow-y: auto;
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
     }
-    .subjects-list h4 { margin-top: 0; margin-bottom: 10px; font-size: 1.1em; color: #1976d2; text-align: center; }
-    .subject-item {
-      border: 1px solid #aaa; border-radius: 4px; padding: 6px 8px; margin-bottom: 7px;
-      background: #eafaf1; cursor: grab; font-size: 0.98em; transition: background 0.2s; user-select: none; display: block; word-break: break-word;
+    h2 {
+      text-align: center;
+      margin-bottom: 5px;
+      color: #1565c0;
     }
-    .subject-item:active { background: #c0e6d0; }
-    .subject-item.english { background: #e3f0fa; border-color: #1976d2; }
-    .subject-item.filipino { background: #eafaf1; border-color: #6CB288; }
-    .subject-item.custom { background: #fffbe6; border-color: #888800; }
-    .add-custom-form { text-align: center; margin-bottom: 10px; }
-    .add-custom-form input[type="text"] { width: 120px; margin-right: 3px; margin-bottom: 5px; padding: 3px 6px; border-radius: 4px; border: 1px solid #aaa; font-size: 0.97em; }
-    .add-custom-form button { background: #1976d2; color: #fff; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.97em; cursor: pointer; }
-    .add-custom-form button:hover { background: #1565c0; }
+    .header {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .theme-selector {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .subject-panel {
+      border: 1px solid #aaa;
+      background: #fff;
+      border-radius: 8px;
+      max-width: 900px;
+      margin: 0 auto 22px auto;
+      padding: 12px 16px 8px 16px;
+      box-shadow: 0 2px 10px rgba(60, 60, 60, 0.07);
+      max-height: 300px;
+      overflow: auto;
+    }
+    .subject-panel details summary {
+      font-weight: bold;
+      font-size: 1.13em;
+      cursor: pointer;
+      margin-bottom: 4px;
+      outline: none;
+    }
+    .subject-list {
+      margin: 0 0 12px 0;
+      padding: 0;
+      list-style: none;
+    }
+    .subject-list li {
+      margin-bottom: 7px;
+    }
+    .subject-btn {
+      background: #f0f0f0;
+      color: #333;
+      border: 1px solid #bbb;
+      padding: 7px 15px;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s, border 0.2s;
+      margin-right: 7px;
+      margin-bottom: 4px;
+      display: inline-block;
+      text-align: left;
+      min-width: 250px;
+      max-width: 400px;
+      word-break: break-word;
+    }
+    .subject-btn:active, .subject-btn:focus {
+      background: #dcedc8;
+      border: 1px solid #6CB288;
+      color: #222;
+      outline: none;
+    }
+    .panel-hint {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 2px;
+      margin-left: 6px;
+    }
     table {
-      width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      transition: background 0.3s, box-shadow 0.3s; min-width: 700px; max-width: 950px;
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: background 0.3s, box-shadow 0.3s;
     }
-    th, td { border: 1px solid #444; padding: 8px; text-align: center; vertical-align: top; transition: background 0.3s, color 0.3s; min-width: 100px; position: relative; }
-    th { background: #1976d2; color: #fff; }
-    tbody tr:nth-child(even) { background: #f1f8ff; }
-    .schedule-input { width: 100%; min-height: 40px; border: none; text-align: center; padding: 4px 2px; border-radius: 5px; background: transparent; transition: background 0.2s; font-size: 0.98em; resize: vertical; overflow-y: auto; }
-    .schedule-input:focus { outline: none; background-color: #e0f7fa; }
-    .btn-group { text-align: center; margin: 20px 0; }
-    button { background: #1976d2; color: #fff; border: none; padding: 9px 18px; border-radius: 4px; margin: 0 8px; cursor: pointer; font-size: 1em; }
-    button:hover { background: #1565c0; }
+    th, td {
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: center;
+      vertical-align: top;
+      transition: background 0.3s, color 0.3s;
+    }
+    th {
+      background: #1976d2;
+      color: #fff;
+    }
+    tbody tr:nth-child(even) {
+      background: #f1f8ff;
+    }
+    input[type="text"] {
+      width: 100%;
+      border: none;
+      text-align: center;
+      padding: 4px 2px;
+      border-radius: 5px;
+      background: transparent;
+      transition: background 0.2s;
+      font-size: 1em;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      background-color: #e0f7fa;
+    }
+    .btn-group {
+      text-align: center;
+      margin: 20px 0;
+    }
+    button {
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 4px;
+      margin: 0 8px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    button:hover {
+      background: #1565c0;
+    }
     @media print {
-      body { background: #fff; padding: 0; }
-      .btn-group, .header input, .major-selector, .theme-selector, .subjects-list { display: none !important; }
-      table { box-shadow: none; font-size: 13px; }
-      th, td { border-color: #000; }
-      .schedule-input { border: none !important; background: transparent !important; color: #000 !important; }
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      .btn-group, .header input, .theme-selector, .subject-panel {
+        display: none !important;
+      }
+      table {
+        box-shadow: none;
+        font-size: 13px;
+      }
+      th, td {
+        border-color: #000;
+      }
+      input[type="text"] {
+        border: none !important;
+        background: transparent !important;
+        color: #000 !important;
+      }
     }
-    /* THEME: apply to #scheduleTable for all color themes */
-    #scheduleTable.matcha th { background: #6CB288 !important; color: #fff !important; }
-    #scheduleTable.matcha tbody tr:nth-child(even) { background: #eafaf1 !important; }
-    #scheduleTable.matcha, #scheduleTable.matcha td, #scheduleTable.matcha th { border-color: #6CB288 !important; }
-    #scheduleTable.pink th { background: #E75480 !important; color: #fff !important; }
-    #scheduleTable.pink tbody tr:nth-child(even) { background: #ffe2ed !important; }
-    #scheduleTable.pink, #scheduleTable.pink td, #scheduleTable.pink th { border-color: #E75480 !important; }
-    #scheduleTable.blue th { background: #1976d2 !important; color: #fff !important; }
-    #scheduleTable.blue tbody tr:nth-child(even) { background: #e3f0fa !important; }
-    #scheduleTable.blue, #scheduleTable.blue td, #scheduleTable.blue th { border-color: #1976d2 !important; }
-    #scheduleTable.default th { background: #1976d2 !important; color: #fff !important; }
-    #scheduleTable.default tbody tr:nth-child(even) { background: #f1f8ff !important; }
-    #scheduleTable.default, #scheduleTable.default td, #scheduleTable.default th { border-color: #444 !important; }
-    .droppable { outline: 2px dashed #6CB288 !important; background: #f7fff9 !important; }
+
+    /* THEME: Matcha Green */
+    .matcha th {
+      background: #6CB288 !important;
+      color: #fff !important;
+    }
+    .matcha tbody tr:nth-child(even) {
+      background: #eafaf1 !important;
+    }
+    .matcha table, .matcha td, .matcha th {
+      border-color: #6CB288 !important;
+    }
+
+    /* THEME: Pink */
+    .pink th {
+      background: #E75480 !important;
+      color: #fff !important;
+    }
+    .pink tbody tr:nth-child(even) {
+      background: #ffe2ed !important;
+    }
+    .pink table, .pink td, .pink th {
+      border-color: #E75480 !important;
+    }
+
+    /* THEME: Blue */
+    .blue th {
+      background: #1976d2 !important;
+      color: #fff !important;
+    }
+    .blue tbody tr:nth-child(even) {
+      background: #e3f0fa !important;
+    }
+    .blue table, .blue td, .blue th {
+      border-color: #1976d2 !important;
+    }
+
+    /* THEME: Default */
+    .default th {
+      background: #1976d2 !important;
+      color: #fff !important;
+    }
+    .default tbody tr:nth-child(even) {
+      background: #f1f8ff !important;
+    }
+    .default table, .default td, .default th {
+      border-color: #444 !important;
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
-<body>
+<body class="default">
 
-  <div class="major-selector">
-    <label for="major">Major: </label>
-    <select id="major" onchange="changeMajor()">
-      <option value="Filipino">Filipino</option>
-      <option value="English">English</option>
-    </select>
-  </div>
-
-  <h2 id="majorTitle">BACHELOR OF SECONDARY EDUCATION – FILIPINO</h2>
+  <h2>BACHELOR OF SECONDARY EDUCATION – FILIPINO/English</h2>
   <div class="header">
     <strong>1st Semester, Academic Year 2025–2026</strong><br>
     Section: <input type="text" id="sectionName" placeholder="Enter Section" style="width: 200px;">
   </div>
+
   <div class="theme-selector">
     <label for="theme">Table Color: </label>
     <select id="theme" onchange="changeTheme()">
@@ -86,226 +220,175 @@
     </select>
   </div>
 
-  <div class="layout">
-    <div class="subjects-list" id="subjectsList">
-      <h4>Drag Subject to Schedule</h4>
-      <form class="add-custom-form" onsubmit="return addCustomSubject();">
-        <input type="text" id="customSubject" placeholder="Subject name" required>
-        <input type="text" id="customRoom" placeholder="Room/Time (optional)">
-        <button type="submit">Add Custom Subject</button>
-      </form>
-      <!-- Filipino subjects -->
-      <div class="subject-item filipino" draggable="true" data-value="GECC 101a – Art Appreciation&#10;Rm. 200 (CE)">GECC 101a – Art Appreciation<br><small>Rm. 200 (CE)</small></div>
-      <div class="subject-item filipino" draggable="true" data-value="EDUC 101 – Child & Adolescent Learner&#10;Rm. 202 (CE)">EDUC 101 – Child & Adolescent Learner<br><small>Rm. 202 (CE)</small></div>
-      <div class="subject-item filipino" draggable="true" data-value="GECC 105a – Science, Tech & Society&#10;Rm. 200 (CE)">GECC 105a – Science, Tech & Society<br><small>Rm. 200 (CE)</small></div>
-      <div class="subject-item filipino" draggable="true" data-value="GECC 104a – Ethics&#10;Rm. 202 (CE)">GECC 104a – Ethics<br><small>Rm. 202 (CE)</small></div>
-      <div class="subject-item filipino" draggable="true" data-value="GECC 103a – Math in the Modern World&#10;LHS 210 (CE)">GECC 103a – Math in the Modern World<br><small>LHS 210 (CE)</small></div>
-      <div class="subject-item filipino" draggable="true" data-value="GECC 102a – Purposive Comm&#10;LHS 210 (CE)">GECC 102a – Purposive Comm<br><small>LHS 210 (CE)</small></div>
-      <div class="subject-item filipino" draggable="true" data-value="GEEC 111 – Gender & Society&#10;LHS 210 (CE)">GEEC 111 – Gender & Society<br><small>LHS 210 (CE)</small></div>
-      <div class="subject-item filipino" draggable="true" data-value="PATHFIT 101 – Mvmt. Competency Trng&#10;2:30–4:30PM&#10;Grnd-13 (CE)">PATHFIT 101 – Mvmt. Competency Trng<br><small>2:30–4:30PM, Grnd-13 (CE)</small></div>
-      <div class="subject-item filipino" draggable="true" data-value="NSTP 101C – LTS&#10;8:00–11:00AM&#10;Grnd-13 (CE)">NSTP 101C – LTS<br><small>8:00–11:00AM, Grnd-13 (CE)</small></div>
-      <!-- English major schedule slots -->
-      <div class="subject-item english" draggable="true" data-value="08:00–09:30 AM&#10;Room 202 – BTVTED/BTLED (CE)" style="display:none;">08:00–09:30 AM<br><small>Room 202 – BTVTED/BTLED (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="10:00 AM–12:00 PM&#10;Room 200 – BTVTED/BTLED (CE)" style="display:none;">10:00 AM–12:00 PM<br><small>Room 200 – BTVTED/BTLED (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="01:00–02:00 PM&#10;Room 211 – Lecture Room (CE)" style="display:none;">01:00–02:00 PM<br><small>Room 211 – Lecture Room (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="08:00–09:30 AM&#10;LHS 210 – Lecture Room (CE)" style="display:none;">08:00–09:30 AM<br><small>LHS 210 – Lecture Room (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="09:30–11:00 AM&#10;Room 202 – BTVTED/BTLED (CE)" style="display:none;">09:30–11:00 AM<br><small>Room 202 – BTVTED/BTLED (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="02:00–03:30 PM&#10;Room 205 – Classroom (CE)" style="display:none;">02:00–03:30 PM<br><small>Room 205 – Classroom (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="08:00–10:00 AM&#10;LHS 210 – Lecture Room (CE)" style="display:none;">08:00–10:00 AM<br><small>LHS 210 – Lecture Room (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="12:00–02:00 PM&#10;Room 200 – BTVTED/BTLED (CE)" style="display:none;">12:00–02:00 PM<br><small>Room 200 – BTVTED/BTLED (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="10:00 AM–12:00 PM&#10;Grnd - 15 (CE)" style="display:none;">10:00 AM–12:00 PM<br><small>Grnd - 15 (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="08:00–09:30 AM&#10;Room 202 – BTVTED/BTLED (CE)" style="display:none;">08:00–09:30 AM<br><small>Room 202 – BTVTED/BTLED (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="09:30–11:00 AM&#10;Room 202 – BTVTED/BTLED (CE)" style="display:none;">09:30–11:00 AM<br><small>Room 202 – BTVTED/BTLED (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="12:00–01:00 PM&#10;Room 207 – BSEd (CE)" style="display:none;">12:00–01:00 PM<br><small>Room 207 – BSEd (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="01:00–02:00 PM&#10;LHS 210 – Lecture Room (CE)" style="display:none;">01:00–02:00 PM<br><small>LHS 210 – Lecture Room (CE)</small></div>
-      <div class="subject-item english" draggable="true" data-value="08:00–11:00 AM&#10;Grnd - 11 (CE)" style="display:none;">08:00–11:00 AM<br><small>Grnd - 11 (CE)</small></div>
-    </div>
-    <div style="flex: 1 1 700px;">
-      <div class="btn-group">
-        <button onclick="saveSchedule()">Save Schedule</button>
-        <button onclick="window.print()">Print Schedule</button>
-        <button onclick="saveAsImage()">Save as Image</button>
-        <button onclick="resetSchedule()" style="background:#E75480;">Reset</button>
-      </div>
-      <table id="scheduleTable" class="default">
-        <thead>
-          <tr>
-            <th>TIME</th>
-            <th>MONDAY</th>
-            <th>TUESDAY</th>
-            <th>WEDNESDAY</th>
-            <th>THURSDAY</th>
-            <th>FRIDAY</th>
-            <th>SATURDAY</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>7:30–8:00</td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-          </tr>
-          <tr>
-            <td>8:00–9:00</td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-          </tr>
-          <tr>
-            <td>9:00–10:00</td>
-            <td><textarea class="schedule-input">GECC 101a – Art Appreciation&#10;Rm. 200 (CE)</textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input">GECC 101a – Art Appreciation&#10;Rm. 200 (CE)</textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input">GECC 101a – Art Appreciation&#10;Rm. 200 (CE)</textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-          </tr>
-          <tr>
-            <td>10:00–11:00</td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-          </tr>
-          <tr>
-            <td>11:00–12:00</td>
-            <td><textarea class="schedule-input">EDUC 101 – Child & Adolescent Learner&#10;Rm. 202 (CE)</textarea></td>
-            <td><textarea class="schedule-input">GEEC 111 – Gender & Society&#10;LHS 210 (CE)</textarea></td>
-            <td><textarea class="schedule-input">EDUC 101 – Child & Adolescent Learner&#10;Rm. 202 (CE)</textarea></td>
-            <td><textarea class="schedule-input">GEEC 111 – Gender & Society&#10;LHS 210 (CE)</textarea></td>
-            <td><textarea class="schedule-input">EDUC 101 – Child & Adolescent Learner&#10;Rm. 202 (CE)</textarea></td>
-            <td><textarea class="schedule-input">NSTP 101C – LTS&#10;8:00–11:00AM&#10;Grnd-13 (CE)</textarea></td>
-          </tr>
-          <tr>
-            <td>12:00–1:00</td>
-            <td><textarea class="schedule-input">GECC 105a – Science, Tech & Society&#10;Rm. 200 (CE)</textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input">GECC 105a – Science, Tech & Society&#10;Rm. 200 (CE)</textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-          </tr>
-          <tr>
-            <td>1:00–2:00</td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input">GECC 104a – Ethics&#10;Rm. 202 (CE)</textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input">GECC 104a – Ethics&#10;Rm. 202 (CE)</textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-          </tr>
-          <tr>
-            <td>2:00–3:00</td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input">GECC 105a – Science, Tech & Society&#10;Rm. 207 (CE)</textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input">GECC 103a – Math in the Modern World&#10;LHS 210 (CE)</textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-          </tr>
-          <tr>
-            <td>3:00–4:00</td>
-            <td><textarea class="schedule-input">PATHFIT 101 – Mvmt. Competency Trng&#10;2:30–4:30PM&#10;Grnd-13 (CE)</textarea></td>
-            <td><textarea class="schedule-input">GECC 102a – Purposive Comm&#10;LHS 210 (CE)</textarea></td>
-            <td><textarea class="schedule-input">GECC 103a – Math in the Modern World&#10;LHS 210 (CE)</textarea></td>
-            <td><textarea class="schedule-input">GECC 102a – Purposive Comm&#10;LHS 210 (CE)</textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-          </tr>
-          <tr>
-            <td>4:00–5:00</td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-            <td><textarea class="schedule-input"></textarea></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <!-- Subject Quick Fill Panel -->
+  <div class="subject-panel">
+    <div class="panel-hint">Click a subject to copy. Paste it into any cell!</div>
+    <details open>
+      <summary>English Major – Class Schedule</summary>
+      <ul class="subject-list">
+        <li><button class="subject-btn" data-value="08:00 AM – 09:30 AM | Room 202 – BTVTED/BTLED (CE)">Monday: 08:00 AM – 09:30 AM | Room 202 – BTVTED/BTLED (CE)</button></li>
+        <li><button class="subject-btn" data-value="10:00 AM – 12:00 PM | Room 200 – BTVTED/BTLED (CE)">Monday: 10:00 AM – 12:00 PM | Room 200 – BTVTED/BTLED (CE)</button></li>
+        <li><button class="subject-btn" data-value="01:00 PM – 02:00 PM | Room 211 – Lecture Room (CE)">Monday: 01:00 PM – 02:00 PM | Room 211 – Lecture Room (CE)</button></li>
+        <li><button class="subject-btn" data-value="08:00 AM – 09:30 AM | LHS 210 – Lecture Room (CE)">Tuesday: 08:00 AM – 09:30 AM | LHS 210 – Lecture Room (CE)</button></li>
+        <li><button class="subject-btn" data-value="09:30 AM – 11:00 AM | Room 202 – BTVTED/BTLED (CE)">Tuesday: 09:30 AM – 11:00 AM | Room 202 – BTVTED/BTLED (CE)</button></li>
+        <li><button class="subject-btn" data-value="02:00 PM – 03:30 PM | Room 205 – Classroom (CE)">Tuesday: 02:00 PM – 03:30 PM | Room 205 – Classroom (CE)</button></li>
+        <li><button class="subject-btn" data-value="08:00 AM – 10:00 AM | LHS 210 – Lecture Room (CE)">Wednesday: 08:00 AM – 10:00 AM | LHS 210 – Lecture Room (CE)</button></li>
+        <li><button class="subject-btn" data-value="12:00 PM – 02:00 PM | Room 200 – BTVTED/BTLED (CE)">Wednesday: 12:00 PM – 02:00 PM | Room 200 – BTVTED/BTLED (CE)</button></li>
+        <li><button class="subject-btn" data-value="08:00 AM – 09:30 AM | LHS 210 – Lecture Room (CE)">Thursday: 08:00 AM – 09:30 AM | LHS 210 – Lecture Room (CE)</button></li>
+        <li><button class="subject-btn" data-value="10:00 AM – 12:00 PM | Grnd - 15 (CE)">Thursday: 10:00 AM – 12:00 PM | Grnd - 15 (CE)</button></li>
+        <li><button class="subject-btn" data-value="02:00 PM – 03:30 PM | Room 205 – Classroom (CE)">Thursday: 02:00 PM – 03:30 PM | Room 205 – Classroom (CE)</button></li>
+        <li><button class="subject-btn" data-value="08:00 AM – 09:30 AM | Room 202 – BTVTED/BTLED (CE)">Friday: 08:00 AM – 09:30 AM | Room 202 – BTVTED/BTLED (CE)</button></li>
+        <li><button class="subject-btn" data-value="09:30 AM – 11:00 AM | Room 202 – BTVTED/BTLED (CE)">Friday: 09:30 AM – 11:00 AM | Room 202 – BTVTED/BTLED (CE)</button></li>
+        <li><button class="subject-btn" data-value="12:00 PM – 01:00 PM | Room 207 – BSEd (CE)">Friday: 12:00 PM – 01:00 PM | Room 207 – BSEd (CE)</button></li>
+        <li><button class="subject-btn" data-value="01:00 PM – 02:00 PM | LHS 210 – Lecture Room (CE)">Friday: 01:00 PM – 02:00 PM | LHS 210 – Lecture Room (CE)</button></li>
+        <li><button class="subject-btn" data-value="08:00 AM – 11:00 AM | Grnd - 11 (CE)">Saturday: 08:00 AM – 11:00 AM | Grnd - 11 (CE)</button></li>
+      </ul>
+    </details>
+    <details>
+      <summary>Filipino Major – Class Schedule</summary>
+      <ul class="subject-list">
+        <li><button class="subject-btn" data-value="09:00 AM – 10:00 AM | GECC 101a – Art Appreciation&#10;Room 200 (CE)">Monday: 09:00 AM – 10:00 AM | GECC 101a – Art Appreciation<br>Room 200 (CE)</button></li>
+        <li><button class="subject-btn" data-value="11:00 AM – 12:00 PM | EDUC 101 – Child & Adolescent Learner&#10;Room 202 (CE)">Monday: 11:00 AM – 12:00 PM | EDUC 101 – Child & Adolescent Learner<br>Room 202 (CE)</button></li>
+        <li><button class="subject-btn" data-value="12:00 PM – 01:00 PM | GECC 105a – Science, Tech & Society&#10;Room 200 (CE)">Monday: 12:00 PM – 01:00 PM | GECC 105a – Science, Tech & Society<br>Room 200 (CE)</button></li>
+        <li><button class="subject-btn" data-value="2:30–4:30 PM | PATHFIT 101 – Movement Competency Trng&#10;Grnd-13 (CE)">Monday: 2:30–4:30 PM | PATHFIT 101 – Movement Competency Trng<br>Grnd-13 (CE)</button></li>
+        <li><button class="subject-btn" data-value="11:00 AM – 12:00 PM | GEEC 111 – Gender & Society&#10;LHS 210 (CE)">Tuesday: 11:00 AM – 12:00 PM | GEEC 111 – Gender & Society<br>LHS 210 (CE)</button></li>
+        <li><button class="subject-btn" data-value="01:00 PM – 02:00 PM | GECC 104a – Ethics&#10;Room 202 (CE)">Tuesday: 01:00 PM – 02:00 PM | GECC 104a – Ethics<br>Room 202 (CE)</button></li>
+        <li><button class="subject-btn" data-value="03:00 PM – 04:00 PM | GECC 102a – Purposive Communication&#10;LHS 210 (CE)">Tuesday: 03:00 PM – 04:00 PM | GECC 102a – Purposive Communication<br>LHS 210 (CE)</button></li>
+        <li><button class="subject-btn" data-value="09:00 AM – 10:00 AM | GECC 101a – Art Appreciation&#10;Room 200 (CE)">Wednesday: 09:00 AM – 10:00 AM | GECC 101a – Art Appreciation<br>Room 200 (CE)</button></li>
+        <li><button class="subject-btn" data-value="11:00 AM – 12:00 PM | EDUC 101 – Child & Adolescent Learner&#10;Room 202 (CE)">Wednesday: 11:00 AM – 12:00 PM | EDUC 101 – Child & Adolescent Learner<br>Room 202 (CE)</button></li>
+        <li><button class="subject-btn" data-value="02:00 PM – 03:00 PM | GECC 105a – Science, Tech & Society&#10;Room 207 (CE)">Wednesday: 02:00 PM – 03:00 PM | GECC 105a – Science, Tech & Society<br>Room 207 (CE)</button></li>
+        <li><button class="subject-btn" data-value="03:00 PM – 04:00 PM | GECC 103a – Math in the Modern World&#10;LHS 210 (CE)">Wednesday: 03:00 PM – 04:00 PM | GECC 103a – Math in the Modern World<br>LHS 210 (CE)</button></li>
+        <li><button class="subject-btn" data-value="11:00 AM – 12:00 PM | GEEC 111 – Gender & Society&#10;LHS 210 (CE)">Thursday: 11:00 AM – 12:00 PM | GEEC 111 – Gender & Society<br>LHS 210 (CE)</button></li>
+        <li><button class="subject-btn" data-value="01:00 PM – 02:00 PM | GECC 104a – Ethics&#10;Room 202 (CE)">Thursday: 01:00 PM – 02:00 PM | GECC 104a – Ethics<br>Room 202 (CE)</button></li>
+        <li><button class="subject-btn" data-value="03:00 PM – 04:00 PM | GECC 102a – Purposive Communication&#10;LHS 210 (CE)">Thursday: 03:00 PM – 04:00 PM | GECC 102a – Purposive Communication<br>LHS 210 (CE)</button></li>
+        <li><button class="subject-btn" data-value="09:00 AM – 10:00 AM | GECC 101a – Art Appreciation&#10;Room 200 (CE)">Friday: 09:00 AM – 10:00 AM | GECC 101a – Art Appreciation<br>Room 200 (CE)</button></li>
+        <li><button class="subject-btn" data-value="11:00 AM – 12:00 PM | EDUC 101 – Child & Adolescent Learner&#10;Room 202 (CE)">Friday: 11:00 AM – 12:00 PM | EDUC 101 – Child & Adolescent Learner<br>Room 202 (CE)</button></li>
+        <li><button class="subject-btn" data-value="12:00 PM – 01:00 PM | GECC 105a – Science, Tech & Society&#10;Room 200 (CE)">Friday: 12:00 PM – 01:00 PM | GECC 105a – Science, Tech & Society<br>Room 200 (CE)</button></li>
+        <li><button class="subject-btn" data-value="02:00 PM – 03:00 PM | GECC 103a – Math in the Modern World&#10;LHS 210 (CE)">Friday: 02:00 PM – 03:00 PM | GECC 103a – Math in the Modern World<br>LHS 210 (CE)</button></li>
+        <li><button class="subject-btn" data-value="08:00 AM – 11:00 AM | NSTP 101C – LTS&#10;Grnd-13 (CE)">Saturday: 08:00 AM – 11:00 AM | NSTP 101C – LTS<br>Grnd-13 (CE)</button></li>
+      </ul>
+    </details>
   </div>
+  <!-- End Subject Panel -->
+
+  <div class="btn-group">
+    <button onclick="saveSchedule()">Save Schedule</button>
+    <button onclick="window.print()">Print Schedule</button>
+    <button onclick="saveAsImage()">Save as Image</button>
+  </div>
+
+  <table id="scheduleTable">
+    <thead>
+      <tr>
+        <th>TIME</th>
+        <th>MONDAY</th>
+        <th>TUESDAY</th>
+        <th>WEDNESDAY</th>
+        <th>THURSDAY</th>
+        <th>FRIDAY</th>
+        <th>SATURDAY</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>7:30–8:00</td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+      </tr>
+      <tr>
+        <td>8:00–9:00</td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+      </tr>
+      <tr>
+        <td>9:00–10:00</td>
+        <td><input type="text" value="GECC 101a – Art Appreciation&#10;Rm. 200 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 101a – Art Appreciation&#10;Rm. 200 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 101a – Art Appreciation&#10;Rm. 200 (CE)"></td>
+        <td><input type="text"></td>
+      </tr>
+      <tr>
+        <td>10:00–11:00</td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+      </tr>
+      <tr>
+        <td>11:00–12:00</td>
+        <td><input type="text" value="EDUC 101 – Child & Adolescent Learner&#10;Rm. 202 (CE)"></td>
+        <td><input type="text" value="GEEC 111 – Gender & Society&#10;LHS 210 (CE)"></td>
+        <td><input type="text" value="EDUC 101 – Child & Adolescent Learner&#10;Rm. 202 (CE)"></td>
+        <td><input type="text" value="GEEC 111 – Gender & Society&#10;LHS 210 (CE)"></td>
+        <td><input type="text" value="EDUC 101 – Child & Adolescent Learner&#10;Rm. 202 (CE)"></td>
+        <td><input type="text" value="NSTP 101C – LTS&#10;8:00–11:00AM&#10;Grnd-13 (CE)"></td>
+      </tr>
+      <tr>
+        <td>12:00–1:00</td>
+        <td><input type="text" value="GECC 105a – Science, Tech & Society&#10;Rm. 200 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 105a – Science, Tech & Society&#10;Rm. 200 (CE)"></td>
+        <td><input type="text"></td>
+      </tr>
+      <tr>
+        <td>1:00–2:00</td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 104a – Ethics&#10;Rm. 202 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 104a – Ethics&#10;Rm. 202 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+      </tr>
+      <tr>
+        <td>2:00–3:00</td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 105a – Science, Tech & Society&#10;Rm. 207 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text" value="GECC 103a – Math in the Modern World&#10;LHS 210 (CE)"></td>
+        <td><input type="text"></td>
+      </tr>
+      <tr>
+        <td>3:00–4:00</td>
+        <td><input type="text" value="PATHFIT 101 – Movement Competency Trng&#10;2:30–4:30PM&#10;Grnd-13 (CE)"></td>
+        <td><input type="text" value="GECC 102a – Purposive Comm&#10;LHS 210 (CE)"></td>
+        <td><input type="text" value="GECC 103a – Math in the Modern World&#10;LHS 210 (CE)"></td>
+        <td><input type="text" value="GECC 102a – Purposive Comm&#10;LHS 210 (CE)"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+      </tr>
+      <tr>
+        <td>4:00–5:00</td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+      </tr>
+    </tbody>
+  </table>
+
   <script>
-    let draggedValue = null;
-    function updateDraggables() {
-      document.querySelectorAll('.subject-item').forEach(item => {
-        item.ondragstart = function() {
-          draggedValue = this.getAttribute('data-value');
-        };
-      });
-    }
-    function enableDroppable() {
-      document.querySelectorAll('.schedule-input').forEach(cell => {
-        cell.ondragover = function(e) {
-          e.preventDefault();
-          this.parentElement.classList.add('droppable');
-        };
-        cell.ondragleave = function() {
-          this.parentElement.classList.remove('droppable');
-        };
-        cell.ondrop = function(e) {
-          e.preventDefault();
-          if (draggedValue) {
-            this.value = draggedValue.replace(/&#10;/g, '\n');
-          }
-          this.parentElement.classList.remove('droppable');
-        };
-      });
-    }
-    // Initial enable
-    window.onload = function() {
-      enableDroppable();
-      updateDraggables();
-      changeMajor();
-    };
-    // Add Custom Subject
-    function addCustomSubject() {
-      const name = document.getElementById('customSubject').value.trim();
-      const room = document.getElementById('customRoom').value.trim();
-      if (!name) return false;
-      let display = name;
-      let value = name;
-      if (room) {
-        display += "<br><small>" + room + "</small>";
-        value += "&#10;" + room;
-      }
-      const div = document.createElement('div');
-      div.className = 'subject-item custom';
-      div.setAttribute('draggable', 'true');
-      div.setAttribute('data-value', value);
-      div.innerHTML = display;
-      div.ondragstart = function() {
-        draggedValue = this.getAttribute('data-value');
-      };
-      document.getElementById('subjectsList').appendChild(div);
-      document.getElementById('customSubject').value = "";
-      document.getElementById('customRoom').value = "";
-      return false;
-    }
     function changeTheme() {
       const theme = document.getElementById('theme').value;
-      const table = document.getElementById('scheduleTable');
-      table.className = theme;
+      document.body.className = theme;
     }
-    function changeMajor() {
-      const major = document.getElementById('major').value;
-      document.getElementById('majorTitle').textContent = "BACHELOR OF SECONDARY EDUCATION – " + major.toUpperCase();
-      document.querySelectorAll('.subject-item.filipino').forEach(item => {
-        item.style.display = (major === "Filipino") ? "" : "none";
-      });
-      document.querySelectorAll('.subject-item.english').forEach(item => {
-        item.style.display = (major === "English") ? "" : "none";
-      });
-    }
+
     function saveSchedule() {
       let table = document.getElementById('scheduleTable');
       let section = document.getElementById('sectionName').value;
@@ -313,9 +396,68 @@
       for (let row of table.rows) {
         let rowData = [];
         for (let i = 0; i < row.cells.length; i++) {
-          if (i === 0) { rowData.push(row.cells[i].textContent); }
-          else {
-            let input = row.cells[i].querySelector('.schedule-input');
+          if (i === 0) { // TIME column
+            rowData.push(row.cells[i].textContent);
+          } else {
+            let input = row.cells[i].querySelector('input[type="text"]');
             rowData.push(input ? input.value.replace(/,/g, ' ') : '');
           }
-   
+        }
+        csv += rowData.join(',') + '\n';
+      }
+      let blob = new Blob([csv], {type: 'text/csv'});
+      let link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'schedule.csv';
+      link.click();
+    }
+
+    function saveAsImage() {
+      // Clone the table and replace all inputs with their text values for the image
+      const originalTable = document.getElementById('scheduleTable');
+      const cloneTable = originalTable.cloneNode(true);
+      cloneTable.id = '';
+      // Replace all inputs
+      const inputs = cloneTable.querySelectorAll('input[type="text"]');
+      inputs.forEach(input => {
+        const value = input.value.replace(/\n/g, '<br>');
+        const span = document.createElement('span');
+        span.innerHTML = value;
+        input.parentNode.replaceChild(span, input);
+      });
+
+      // Apply the current theme to the clone
+      const theme = document.body.className;
+      cloneTable.className = originalTable.className;
+      document.body.appendChild(cloneTable);
+      cloneTable.style.position = 'fixed';
+      cloneTable.style.top = '-9999px';
+
+      html2canvas(cloneTable).then(function(canvas) {
+        const link = document.createElement('a');
+        link.download = 'schedule.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        document.body.removeChild(cloneTable);
+      });
+    }
+
+    // Subject quick fill: Copy to clipboard on click
+    document.addEventListener('DOMContentLoaded', function() {
+      var subjectBtns = document.querySelectorAll('.subject-btn');
+      subjectBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const value = btn.getAttribute('data-value').replace(/<br\s*\/?>/gi, "\n");
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(value);
+            btn.textContent = "Copied! (Paste in table cell)";
+            setTimeout(() => {
+              btn.textContent = btn.getAttribute('data-value').replace(/\n/g, ' ').replace(/<br\s*\/?>/gi, ' ');
+            }, 900);
+          } else {
+            // fallback
+            const textarea = document.createElement('textarea');
+            textarea.value = value;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.e
