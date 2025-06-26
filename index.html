@@ -85,6 +85,7 @@
       }
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body>
 
@@ -97,6 +98,7 @@
   <div class="btn-group">
     <button onclick="saveSchedule()">Save Schedule</button>
     <button onclick="window.print()">Print Schedule</button>
+    <button onclick="saveAsImage()">Save as Image</button>
   </div>
 
   <table id="scheduleTable">
@@ -223,6 +225,16 @@
       link.href = URL.createObjectURL(blob);
       link.download = 'schedule.csv';
       link.click();
+    }
+
+    function saveAsImage() {
+      const table = document.getElementById('scheduleTable');
+      html2canvas(table).then(function(canvas) {
+        const link = document.createElement('a');
+        link.download = 'schedule.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
     }
   </script>
 </body>
