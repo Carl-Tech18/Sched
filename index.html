@@ -392,7 +392,8 @@
   function changeMajor() {
   const major = document.getElementById('majorSelect').value;
   const title = document.getElementById('majorTitle');
-  title.textContent = "BACHELOR OF SECONDARY EDUCATION – " + major;
+  let majorDisplay = major.charAt(0) + major.slice(1).toLowerCase(); // "Filipino" or "English"
+  title.textContent = "BACHELOR OF SECONDARY EDUCATION – " + majorDisplay;
   }
 
   function changeTheme() {
@@ -402,25 +403,25 @@
   }
 
   function saveSchedule() {
-    let table = document.getElementById('scheduleTable');
-    let section = document.getElementById('sectionName').value;
-    let heading = document.getElementById('majorTitle').textContent;
-    let subheading = document.querySelector('.header strong').textContent;
-    let csv = heading + '\n' + subheading + '\n' + 'Section:,' + section + '\n';
+  let table = document.getElementById('scheduleTable');
+  let section = document.getElementById('sectionName').value;
+  let heading = document.getElementById('majorTitle').textContent;
+  let subheading = document.querySelector('strong').textContent;
+  let csv = heading + '\n' + subheading + '\n' + 'Section:,' + section + '\n';
 
-    for (let row of table.rows) {
-      let rowData = [];
-      for (let i = 0; i < row.cells.length; i++) {
-        let input = row.cells[i].querySelector('input[type="text"]');
-        rowData.push(input ? input.value.replace(/,/g, ' ') : '');
-      }
-      csv += rowData.join(',') + '\n';
+  for (let row of table.rows) {
+    let rowData = [];
+    for (let i = 0; i < row.cells.length; i++) {
+      let input = row.cells[i].querySelector('input[type="text"]');
+      rowData.push(input ? input.value.replace(/,/g, ' ') : '');
     }
-    let blob = new Blob([csv], {type: 'text/csv'});
-    let link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'schedule.csv';
-    link.click();
+    csv += rowData.join(',') + '\n';
+  }
+  let blob = new Blob([csv], {type: 'text/csv'});
+  let link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'schedule.csv';
+  link.click();
   }
 
   function saveAsImage() {
