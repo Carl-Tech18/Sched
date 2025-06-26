@@ -7,15 +7,23 @@
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
+      background: #f9f9f9;
     }
     h2 {
       text-align: center;
       margin-bottom: 5px;
+      color: #1565c0;
+    }
+    .header {
+      margin-bottom: 10px;
+      text-align: center;
     }
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 15px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
     th, td {
       border: 1px solid #444;
@@ -23,17 +31,58 @@
       text-align: center;
       vertical-align: top;
     }
-    input {
+    th {
+      background: #1976d2;
+      color: #fff;
+    }
+    tbody tr:nth-child(even) {
+      background: #f1f8ff;
+    }
+    input[type="text"] {
       width: 100%;
       border: none;
       text-align: center;
+      padding: 4px 2px;
+      border-radius: 5px;
+      background: transparent;
+      transition: background 0.2s;
     }
-    input:focus {
+    input[type="text"]:focus {
       outline: none;
       background-color: #e0f7fa;
     }
-    .header {
-      margin-bottom: 10px;
+    .btn-group {
+      text-align: center;
+      margin: 20px 0;
+    }
+    button {
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 4px;
+      margin: 0 8px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    button:hover {
+      background: #1565c0;
+    }
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      .btn-group, .header input {
+        display: none !important;
+      }
+      table {
+        box-shadow: none;
+        font-size: 13px;
+      }
+      th, td {
+        border-color: #000;
+      }
     }
   </style>
 </head>
@@ -42,10 +91,15 @@
   <h2>BACHELOR OF SECONDARY EDUCATION – FILIPINO</h2>
   <div class="header">
     <strong>1st Semester, Academic Year 2025–2026</strong><br>
-    Section: <input type="text" placeholder="Enter Section" style="width: 200px;"> 
+    Section: <input type="text" id="sectionName" placeholder="Enter Section" style="width: 200px;">
   </div>
 
-  <table>
+  <div class="btn-group">
+    <button onclick="saveSchedule()">Save Schedule</button>
+    <button onclick="window.print()">Print Schedule</button>
+  </div>
+
+  <table id="scheduleTable">
     <thead>
       <tr>
         <th>TIME</th>
@@ -58,50 +112,68 @@
       </tr>
     </thead>
     <tbody>
-      <!-- Time Rows -->
-      <!-- Repeat and edit these rows as needed -->
       <tr>
         <td>7:30–8:00</td>
-        <td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td>
+        <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
       </tr>
       <tr>
         <td>8:00–9:00</td>
-        <td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td>
+        <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
       </tr>
       <tr>
         <td>9:00–10:00</td>
-        <td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td>
+        <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
       </tr>
       <tr>
         <td>10:00–11:00</td>
-        <td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td>
+        <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
       </tr>
       <tr>
         <td>11:00–12:00</td>
-        <td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td>
+        <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
       </tr>
       <tr>
         <td>12:00–1:00</td>
-        <td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td>
+        <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
       </tr>
       <tr>
         <td>1:00–2:00</td>
-        <td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td>
+        <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
       </tr>
       <tr>
         <td>2:00–3:00</td>
-        <td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td>
+        <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
       </tr>
       <tr>
         <td>3:00–4:00</td>
-        <td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td>
+        <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
       </tr>
       <tr>
         <td>4:00–5:00</td>
-        <td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td>
+        <td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td>
       </tr>
     </tbody>
   </table>
 
+  <script>
+    function saveSchedule() {
+      let table = document.getElementById('scheduleTable');
+      let section = document.getElementById('sectionName').value;
+      let csv = 'Section:,' + section + '\\n';
+      for (let row of table.rows) {
+        let rowData = [];
+        for (let cell of row.cells) {
+          let input = cell.querySelector('input[type="text"]');
+          rowData.push(input ? input.value.replace(/,/g, ' ') : cell.textContent);
+        }
+        csv += rowData.join(',') + '\\n';
+      }
+      let blob = new Blob([csv], {type: 'text/csv'});
+      let link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'schedule.csv';
+      link.click();
+    }
+  </script>
 </body>
 </html>
