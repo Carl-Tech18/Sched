@@ -118,6 +118,23 @@ input[type="text"]:focus {
   outline: none;
   background-color: #e0f7fa;
 }
+textarea {
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  resize: vertical;
+  padding: 4px 2px;
+  font-size: 1em;
+  font-family: inherit;
+  box-sizing: border-box;
+  text-align: left;
+  min-height: 2.5em;
+}
+textarea:focus {
+  outline: none;
+  background-color: #e0f7fa;
+}
 .btn-group {
   text-align: center;
   margin: 20px 0;
