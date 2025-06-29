@@ -170,16 +170,16 @@ button:hover {
   border-color: #E75480 !important;
 }
 
-/* THEME: Blue */
-.blue th {
-  background: #1976d2 !important;
+/* THEME: Black */
+.black th {
+  background: #000000 !important;
   color: #fff !important;
 }
 .blue tbody tr:nth-child(even) {
   background: #e3f0fa !important;
 }
 .blue table, .blue td, .blue th {
-  border-color: #1976d2 !important;
+  border-color: #000000 !important;
 }
 
 /* THEME: Default */
