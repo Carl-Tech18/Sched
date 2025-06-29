@@ -1,20 +1,11 @@
 function changeMajor() {
   const major = document.getElementById('majorSelect').value;
   const title = document.getElementById('majorTitle');
-  document.getElementById('headerFilipino').style.display = (major === "FILIPINO" ? "inline" : "none");
-  document.getElementById('headerInfoTech').style.display = (major === "INFO_TECH" ? "inline" : "none");
-}
-
-  if (major === "FILIPINO") {
-    title.textContent = "BACHELOR OF SECONDARY EDUCATION – FILIPINO";
-  } else if (major === "ENGLISH") {
-    title.textContent = "BACHELOR OF SECONDARY EDUCATION – ENGLISH";
-  } else if (major === "INFO_TECH") {
+  if (major === "BSED") {
+    title.textContent = "BACHELOR OF SECONDARY EDUCATION";
+  } else if (major === "BSIT") {
     title.textContent = "BACHELOR OF SCIENCE IN INFO TECH";
   }
-}
-  let majorDisplay = major.charAt(0) + major.slice(1).toLowerCase(); // "Filipino" or "English"
-  title.textContent = "BACHELOR OF SECONDARY EDUCATION – " + majorDisplay;
 }
 
 function changeTheme() {
