@@ -181,14 +181,16 @@ button:hover {
 }
 
 /* THEME: Black */
-.black th {
+.black th,
+.black td {
   background: #000000 !important;
   color: #fff !important;
+  border-color: #000000 !important;
 }
-.blue tbody tr:nth-child(even) {
-  background: #1b2024 !important;
+.black tbody tr:nth-child(even) {
+  background: #181818 !important;
 }
-.blue table, .blue td, .blue th {
+.black table {
   border-color: #000000 !important;
 }
 
