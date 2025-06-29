@@ -19,6 +19,12 @@ h2 {
   gap: 8px;
   margin-bottom: 10px;
 }
+.centered-form label {
+  white-space: nowrap;
+}
+.centered-form {
+  flex-wrap: nowrap;
+}
 .theme-selector {
   text-align: center;
   margin-bottom: 15px;
