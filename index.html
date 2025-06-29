@@ -14,8 +14,7 @@
 
   <div id="scheduleContainer">
     <div style="text-align:center; margin-bottom: 8px;">
-     <h2 id="headerFilipino" style="display:inline;">BACHELOR OF SECONDARY EDUCATION – FILIPINO</h2>
-     <h2 id="headerInfoTech" style="display:none;">BACHELOR OF SCIENCE IN INFO TECH</h2>
+    <h2 id="majorTitle">BACHELOR OF SECONDARY EDUCATION</h2>
       <br>
       <strong>1st Semester, Academic Year 2025–2026</strong><br>
       Section: <input type="text" id="sectionName" placeholder="Enter Section" style="width: 200px;">
@@ -198,10 +197,9 @@
     <button onclick="saveAsImage()">Save as Image</button>
   </div>
 
- <select id="majorSelect" onchange="changeMajor()" ...>
-  <option value="FILIPINO">Filipino</option>
-  <option value="ENGLISH">English</option>
-  <option value="INFO_TECH">Info Tech</option>
+<select id="majorSelect" onchange="changeMajor()">
+  <option value="BSED">BACHELOR OF SECONDARY EDUCATION</option>
+  <option value="BSIT">BACHELOR OF SCIENCE IN INFO TECH</option>
 </select>
 
   <script src="script.js"></script>
