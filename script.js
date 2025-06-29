@@ -26,8 +26,8 @@ function saveSchedule() {
   for (let row of table.rows) {
     let rowData = [];
     for (let i = 0; i < row.cells.length; i++) {
-      let input = row.cells[i].querySelector('input[type="text"]');
-      rowData.push(input ? input.value.replace(/,/g, ' ') : '');
+      let textarea = row.cells[i].querySelector('textarea');
+rowData.push(textarea ? textarea.value.replace(/,/g, ' ') : '');
     }
     csv += rowData.join(',') + '\n';
   }
@@ -43,15 +43,15 @@ function saveAsImage() {
   const cloneContainer = originalContainer.cloneNode(true);
 
   // Replace all <input type="text"> in the clone with spans (with line breaks)
-  const inputs = cloneContainer.querySelectorAll('input[type="text"]');
-  inputs.forEach(input => {
-    const span = document.createElement('span');
-    span.innerHTML = input.value.replace(/\n/g, '<br>');
-    span.style.display = 'inline-block';
-    span.style.minWidth = input.style.minWidth || '70px';
-    span.style.wordBreak = 'break-word';
-    input.parentNode.replaceChild(span, input);
-  });
+  const textareas = cloneContainer.querySelectorAll('textarea');
+textareas.forEach(textarea => {
+  const span = document.createElement('span');
+  span.innerHTML = textarea.value.replace(/\n/g, '<br>');
+  span.style.display = 'inline-block';
+  span.style.minWidth = textarea.style.minWidth || '70px';
+  span.style.wordBreak = 'break-word';
+  textarea.parentNode.replaceChild(span, textarea);
+});
 
   // Apply theme class from body if needed
   cloneContainer.className = originalContainer.className + ' ' + document.body.className;
