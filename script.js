@@ -2,17 +2,17 @@ function changeMajor() {
   const major = document.getElementById('majorSelect').value;
   const title = document.getElementById('majorTitle');
   if (major === "BSED_FILIPINO") {
-    title.textContent = "BACHELOR OF SECONDARY EDUCATION – FILIPINO";
+    title.textContent = "BACHELOR OF SECONDARY EDUCATION IN FILIPINO";
   } else if (major === "BSED_ENGLISH") {
-    title.textContent = "BACHELOR OF SECONDARY EDUCATION – ENGLISH";
+    title.textContent = "BACHELOR OF SECONDARY EDUCATION IN ENGLISH";
   } else if (major === "BSIT") {
-    title.textContent = "BACHELOR OF SCIENCE IN INFO TECH";
+    title.textContent = "BACHELOR OF SCIENCE IN INFO-TECH";
   }
 }
 
 function changeTheme() {
   const theme = document.getElementById('theme').value;
-  document.body.classList.remove('default', 'matcha', 'pink', 'blue');
+  document.body.classList.remove('default', 'matcha', 'pink', 'black');
   document.body.classList.add(theme);
 }
 
