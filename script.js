@@ -1,8 +1,10 @@
 function changeMajor() {
   const major = document.getElementById('majorSelect').value;
   const title = document.getElementById('majorTitle');
-  if (major === "BSED") {
-    title.textContent = "BACHELOR OF SECONDARY EDUCATION";
+  if (major === "BSED_FILIPINO") {
+    title.textContent = "BACHELOR OF SECONDARY EDUCATION – FILIPINO";
+  } else if (major === "BSED_ENGLISH") {
+    title.textContent = "BACHELOR OF SECONDARY EDUCATION – ENGLISH";
   } else if (major === "BSIT") {
     title.textContent = "BACHELOR OF SCIENCE IN INFO TECH";
   }
