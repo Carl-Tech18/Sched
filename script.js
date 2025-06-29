@@ -1,6 +1,9 @@
 function changeMajor() {
   const major = document.getElementById('majorSelect').value;
   const title = document.getElementById('majorTitle');
+  document.getElementById('headerFilipino').style.display = (major === "FILIPINO" ? "inline" : "none");
+  document.getElementById('headerInfoTech').style.display = (major === "INFO_TECH" ? "inline" : "none");
+}
 
   if (major === "FILIPINO") {
     title.textContent = "BACHELOR OF SECONDARY EDUCATION – FILIPINO";
