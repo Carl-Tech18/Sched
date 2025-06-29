@@ -180,17 +180,24 @@ button:hover {
   border-color: #E75480 !important;
 }
 
-/* THEME: Black */
+/* THEME: Black Improved Readability */
 .black th,
 .black td {
-  background: #26282a !important;
+  background: #111 !important;     
   color: #fff !important;
+  border-color: #222 !important;
 }
+
 .black tbody tr:nth-child(even) {
-  background: #353839 !important;
-}
+  background: #181818 !important;  
 .black table {
-  border-color: #26282a !important;
+  border-color: #333 !important;
+  box-shadow: 0 0 8px #0008;
+}
+
+.black th {
+  background: #000 !important;       
+  color: #ffffff !important;      
 }
 
 /* THEME: Default */
