@@ -26,7 +26,9 @@ function saveSchedule() {
   for (let row of table.rows) {
     let rowData = [];
     for (let i = 0; i < row.cells.length; i++) {
-      let textarea = row.cells[i].querySelector('textarea');
+      let cell = row.cells[i];
+      // Only add textarea values for visible cells
+      let textarea = cell.querySelector('textarea');
       rowData.push(textarea ? textarea.value.replace(/,/g, ' ') : '');
     }
     csv += rowData.join(',') + '\n';
@@ -125,11 +127,13 @@ function changeTimeFormat() {
     tableBody.appendChild(row);
   }
 
-  // Re-attach focus event for new textareas
   setUpTextareaFocus();
+  setUpMerging();
 }
 
-// Helper to keep focus tracking on new textareas
+// --------- SUBJECT BUTTONS AND FOCUS TRACKING ----------
+let activeTextarea = null;
+
 function setUpTextareaFocus() {
   const textareas = document.querySelectorAll('textarea');
   textareas.forEach(t => {
@@ -139,9 +143,152 @@ function setUpTextareaFocus() {
   });
 }
 
-// --------- SUBJECT BUTTONS AND FOCUS TRACKING ----------
+// --------- MERGE & UNMERGE FEATURE ----------
+let mergeSelection = [];
+function setUpMerging() {
+  const table = document.getElementById("scheduleTable");
+  table.querySelectorAll('td').forEach(td => {
+    td.removeEventListener('click', handleCellClick);
+    td.addEventListener('click', handleCellClick);
+  });
 
-let activeTextarea = null;
+  const mergeBtn = document.getElementById('mergeBtn');
+  if (mergeBtn) {
+    mergeBtn.onclick = mergeSelectedCells;
+  }
+
+  const unmergeBtn = document.getElementById('unmergeBtn');
+  if (unmergeBtn) {
+    unmergeBtn.onclick = unmergeSelectedCell;
+  }
+}
+
+function handleCellClick(e) {
+  // Only handle left-clicks (not right-clicks or double-clicks)
+  if (e.button !== 0) return;
+  // Don't select time column (first cell)
+  if (this.cellIndex === 0) return;
+
+  // For unmerge, select only one cell at a time
+  if (mergeSelection.length && !e.ctrlKey && !e.shiftKey) {
+    clearMergeSelection();
+  }
+
+  this.classList.toggle('selected-to-merge');
+  const row = this.parentElement.rowIndex;
+  const col = this.cellIndex;
+  const idx = mergeSelection.findIndex(s => s.row === row && s.col === col);
+  if (idx > -1) {
+    mergeSelection.splice(idx, 1);
+  } else {
+    mergeSelection.push({ row, col });
+  }
+}
+
+function mergeSelectedCells() {
+  if (mergeSelection.length < 2) {
+    alert("Select at least 2 adjacent cells in the same column to merge.");
+    return;
+  }
+  // Check all in same column and consecutive rows
+  const col = mergeSelection[0].col;
+  const rows = mergeSelection.map(s => s.row).sort((a, b) => a - b);
+  for (let s of mergeSelection) {
+    if (s.col !== col) {
+      alert("All selected cells must be in the same column!");
+      clearMergeSelection();
+      return;
+    }
+  }
+  for (let i = 1; i < rows.length; i++) {
+    if (rows[i] !== rows[i - 1] + 1) {
+      alert("Cells must be adjacent rows!");
+      clearMergeSelection();
+      return;
+    }
+  }
+  // Don't allow merging cells that are already merged (rowSpan > 1)
+  const table = document.getElementById("scheduleTable");
+  const tbody = table.tBodies[0];
+  for (let i = 0; i < rows.length; i++) {
+    const cell = tbody.rows[rows[i]].cells[col];
+    if (cell.rowSpan > 1) {
+      alert("Cannot merge cells that include an already merged cell.");
+      clearMergeSelection();
+      return;
+    }
+  }
+  // Merge: set rowspan on first, remove following cells
+  const firstRow = rows[0];
+  const startCell = tbody.rows[firstRow].cells[col];
+  startCell.rowSpan = rows.length;
+  startCell.classList.add("merged-cell");
+  // Combine textarea values
+  let mergedVal = '';
+  mergeSelection.forEach((s, idx) => {
+    const ta = tbody.rows[s.row].cells[s.col].querySelector('textarea');
+    if (ta) mergedVal += (mergedVal ? '\n' : '') + ta.value;
+  });
+  startCell.querySelector('textarea').value = mergedVal;
+  // Remove cells in subsequent rows
+  for (let i = 1; i < rows.length; i++) {
+    tbody.rows[rows[i]].deleteCell(col);
+  }
+  // Store merge info for unmerging
+  startCell.dataset.merged = "true";
+  startCell.dataset.mergeRows = rows.length;
+  clearMergeSelection();
+  setUpMerging(); // re-attach listeners
+}
+
+function unmergeSelectedCell() {
+  if (mergeSelection.length !== 1) {
+    alert("Select a single merged cell to unmerge.");
+    return;
+  }
+  const table = document.getElementById("scheduleTable");
+  const tbody = table.tBodies[0];
+  const { row, col } = mergeSelection[0];
+  let cell = tbody.rows[row].cells[col];
+  if (!(cell.dataset && cell.dataset.merged === "true")) {
+    alert("Selected cell is not a merged cell.");
+    clearMergeSelection();
+    return;
+  }
+
+  const numRows = parseInt(cell.dataset.mergeRows, 10) || cell.rowSpan || 1;
+  const textareaVal = cell.querySelector('textarea').value;
+  const splitVals = textareaVal.split(/\r?\n/);
+
+  // Unmerge: reset rowspan, add missing cells back
+  cell.rowSpan = 1;
+  cell.classList.remove("merged-cell");
+  delete cell.dataset.merged;
+  delete cell.dataset.mergeRows;
+
+  // Insert the missing cells in the rows below
+  for (let i = 1; i < numRows; i++) {
+    const rowIdx = row + i;
+    if (tbody.rows[rowIdx]) {
+      const newCell = tbody.rows[rowIdx].insertCell(col);
+      let ta = document.createElement('textarea');
+      ta.rows = 3;
+      ta.value = splitVals[i] || '';
+      newCell.appendChild(ta);
+    }
+  }
+  // Fill the first cell with the first value
+  cell.querySelector('textarea').value = splitVals[0] || '';
+
+  clearMergeSelection();
+  setUpTextareaFocus();
+  setUpMerging();
+}
+
+function clearMergeSelection() {
+  document.querySelectorAll('.selected-to-merge').forEach(td => td.classList.remove('selected-to-merge'));
+  mergeSelection = [];
+}
 
 document.addEventListener('DOMContentLoaded', function () {
   setUpTextareaFocus();
@@ -185,4 +332,5 @@ document.addEventListener('DOMContentLoaded', function () {
     timeFormat.value = 'hour';
     changeTimeFormat();
   }
+  setUpMerging();
 });
