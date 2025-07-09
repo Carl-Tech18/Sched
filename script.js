@@ -113,6 +113,55 @@ document.addEventListener('DOMContentLoaded', function () {
         document.execCommand('copy');
         document.body.removeChild(tempTextarea);
       }
-    });
-  });
-});
+  function changeTimeFormat() {
+  const format = document.getElementById('timeFormat').value;
+  const tableBody = document.querySelector('#scheduleTable tbody');
+
+  let timeSlots = [];
+  if (format === 'hour') {
+    timeSlots = [
+      '7:00–8:00','8:00–9:00','9:00–10:00','10:00–11:00','11:00–12:00',
+      '12:00–1:00','1:00–2:00','2:00–3:00','3:00–4:00','4:00–5:00'
+    ];
+  } else {
+    timeSlots = [
+      '8:00–8:30','8:30–9:00','9:00–9:30','9:30–10:00','10:00–10:30','10:30–11:00',
+      '11:00–11:30','11:30–12:00','12:00–12:30','12:30–1:00','1:00–1:30','1:30–2:00',
+      '2:00–2:30','2:30–3:00','3:00–3:30','3:30–4:00','4:00–4:30','4:30–5:00'
+    ];
+  }
+
+  // Save existing cell values (optional, for user convenience)
+  let cellValues = [];
+  for (let row of tableBody.rows) {
+    let rowData = [];
+    for (let i = 1; i < row.cells.length; i++) {
+      let textarea = row.cells[i].querySelector('textarea');
+      rowData.push(textarea ? textarea.value : '');
+    }
+    cellValues.push(rowData);
+  }
+
+  // Rebuild table rows
+  tableBody.innerHTML = '';
+  for (let i = 0; i < timeSlots.length; i++) {
+    let row = document.createElement('tr');
+    let timeCell = document.createElement('td');
+    let input = document.createElement('input');
+    input.type = 'text';
+    input.value = timeSlots[i];
+    timeCell.appendChild(input);
+    row.appendChild(timeCell);
+
+    for (let j = 0; j < 6; j++) {
+      let td = document.createElement('td');
+      let ta = document.createElement('textarea');
+      ta.rows = 3;
+      // Restore previous values if possible
+      if (cellValues[i] && cellValues[i][j]) ta.value = cellValues[i][j];
+      td.appendChild(ta);
+      row.appendChild(td);
+    }
+    tableBody.appendChild(row);
+  }
+}
