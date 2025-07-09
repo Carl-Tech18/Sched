@@ -295,3 +295,8 @@ table#scheduleTable {
   size: 3in 5in portrait;
   margin: 0.15in;
 }
+@media print {
+  .hide-on-print {
+    display: none !important;
+  }
+}
