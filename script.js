@@ -96,7 +96,9 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
         alert("Click a table cell first before choosing a subject.");
       }
-
+       document.getElementById('timeFormat').value = 'hour';
+      changeTimeFormat();
+    }
       // Copy to clipboard as well
       if (navigator.clipboard) {
         navigator.clipboard.writeText(value);
