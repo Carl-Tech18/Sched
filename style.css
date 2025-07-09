@@ -299,4 +299,15 @@ table#scheduleTable {
   .hide-on-print {
     display: none !important;
   }
+.selected-to-merge {
+  outline: 2px solid orange !important;
+  background: #fff8e1 !important;
+}
+.merged-cell {
+  background: #e0f7fa !important;
+}
+@media print {
+  .hide-on-print {
+    display: none !important;
+  }
 }
