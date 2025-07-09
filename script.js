@@ -1,4 +1,4 @@
-vfunction changeMajor() {
+function changeMajor() {
   const major = document.getElementById('majorSelect').value;
   const title = document.getElementById('majorTitle');
   if (major === "BSED_FILIPINO") {
