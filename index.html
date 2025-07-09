@@ -24,7 +24,14 @@
   <label for="fname">Full Name:</label>
   <input type="text" id="fname" name="fname">
 </form>
-    
+
+    <div style="margin-bottom:10px;">
+  <label for="timeFormat">Time Format: </label>
+  <select id="timeFormat" onchange="changeTimeFormat()">
+    <option value="hour">Hourly (Current)</option>
+    <option value="halfHour">30-Minute Intervals (8:00–8:30 to 5:00)</option>
+  </select>
+</div>
     <table id="scheduleTable">
       <thead>
         <tr>
