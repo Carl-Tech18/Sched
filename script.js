@@ -72,12 +72,32 @@ textareas.forEach(textarea => {
   });
 }
 
-// Subject quick fill: Copy to clipboard on click
-document.addEventListener('DOMContentLoaded', function() {
-  var subjectBtns = document.querySelectorAll('.subject-btn');
-  subjectBtns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
+let activeTextarea = null;
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Track last focused textarea
+  const textareas = document.querySelectorAll('textarea');
+  textareas.forEach(t => {
+    t.addEventListener('focus', function () {
+      activeTextarea = this;
+    });
+  });
+
+  // Subject quick fill: both copy to clipboard and insert into selected textarea
+  const subjectBtns = document.querySelectorAll('.subject-btn');
+  subjectBtns.forEach(btn => {
+    btn.addEventListener('click', function () {
       const value = btn.getAttribute('data-value').replace(/<br\s*\/?>/gi, "\n");
+
+      // Insert into last focused textarea if exists
+      if (activeTextarea) {
+        activeTextarea.value = value;
+        activeTextarea.focus();
+      } else {
+        alert("Click a table cell first before choosing a subject.");
+      }
+
+      // Copy to clipboard as well
       if (navigator.clipboard) {
         navigator.clipboard.writeText(value);
         btn.textContent = "Copied! (Paste in table cell)";
@@ -85,13 +105,13 @@ document.addEventListener('DOMContentLoaded', function() {
           btn.textContent = btn.getAttribute('data-value').replace(/\n/g, ' ').replace(/<br\s*\/?>/gi, ' ');
         }, 900);
       } else {
-        // fallback
-        const textarea = document.createElement('textarea');
-        textarea.value = value;
-        document.body.appendChild(textarea);
-        textarea.select();
+        // Fallback for older browsers
+        const tempTextarea = document.createElement('textarea');
+        tempTextarea.value = value;
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
         document.execCommand('copy');
-        document.body.removeChild(textarea);
+        document.body.removeChild(tempTextarea);
       }
     });
   });
